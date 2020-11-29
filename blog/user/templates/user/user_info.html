@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    个人资料
+{% endblock %}
+{% block header_extends %}
+{% endblock %}
+
+{% block nav_home_active %}active{% endblock %}
+
+{% block content %}
+<div class="containter">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+            {% if user.is_authenticated %}
+                <div class="jumbotron">
+                    <div class="container">
+                            <h1>Hello, {{ user.username }}!</h1>
+                            <img src="{{MEDIA_URL}}{{ request.user.profile.photo }}" alt="..." class="img-thumbnail pull-right" style="width: 150px;height: 150px;">
+                            <p>昵称：{% if user.get_nickname %}{{ user.get_nickname }}{% else %}未绑定{% endif %}<a href="{% url 'change_nickname' %}?from={{ request.get_full_path }}">修改昵称</a></p>
+                            <p>邮箱：{% if user.email %}{{ user.email }}{% else %}未绑定{% endif %}<a href="{% url 'bind_email' %}?from={{ request.get_full_path }}">绑定邮箱</a></p>
+                            <p>上一次登录时间：{{ user.last_login|date:"Y-m-d G:i:s" }}</p>
+                            <p><a href="{% url 'change_password' %}">修改密码</p>
+                    </div>
+                </div>
+            {% else %}
+                <span>未登录，请跳转到首页...</span>
+                <script type="text/javascript">
+                    window.location.href ='/';
+                </script>
+            {% endif %}   
+        </div>
+    </div>
+</div>
+{% endblock %}
