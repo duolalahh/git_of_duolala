@@ -18,8 +18,11 @@ def update_comment(request):
             comment.root = parent.root if not parent.root is None else parent
             comment.parent = parent
             comment.reply_to = parent.user
-
         comment.save()
+
+        #发送邮件
+        comment.send_mail()
+
         data ={}
         data['status']='SUCCESS'
         data['username']=comment.user.get_nickname_or_username()
